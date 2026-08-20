@@ -1,0 +1,23 @@
+{
+  "name": "dsh-plan-window-client",
+  "version": "0.2.0",
+  "description": "Floating plan window for the dsh Web GUI: plan-mode toggle, plan review handoff, and a live editable todo list that steers the agent mid-run",
+  "private": false,
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plan-mode",
+    "todo",
+    "floating-window",
+    "client-plugin"
+  ],
+  "scripts": {
+    "apply": "node apply.mjs",
+    "check": "node --check lib/client.js || node --check client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
