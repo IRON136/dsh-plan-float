@@ -1,5 +1,5 @@
 {
-  "name": "dsh-plan-window-client",
+  "name": "dsh-plan-float",
   "version": "0.2.0",
   "description": "Floating plan window for the dsh Web GUI: plan-mode toggle, plan review handoff, and a live editable todo list that steers the agent mid-run",
   "private": false,
@@ -18,6 +18,6 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/IRON136/dsh-plan-float.git"
   }
 }

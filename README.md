@@ -1,4 +1,4 @@
-# dsh 悬浮计划窗口（Floating Plan Window）
+# dsh-plan-float — dsh 悬浮计划窗口
 
 为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web GUI 添加一个**可悬浮拖动、实时同步、运行中可改计划**的计划窗口。
 
