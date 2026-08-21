@@ -2,6 +2,12 @@
 
 > [English](README.md) | **中文**
 
+![License](https://img.shields.io/github/license/IRON136/dsh-plan-float)
+![Stars](https://img.shields.io/github/stars/IRON136/dsh-plan-float)
+![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.8-4b8bbe)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Browser-lightgrey)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
+
 为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web GUI 添加一个**可悬浮拖动、实时同步、运行中可改计划**的计划窗口。
 
 > 这是对已安装插件 `@deepseek-ai/dsh-client-ui-plan` 的**本地扩展**（不修改 dsh 核心、不新增系统级组件），通过 dsh 的 client 插件热更新机制生效。

@@ -2,6 +2,12 @@
 
 > [中文](README.zh.md) | **English**
 
+![License](https://img.shields.io/github/license/IRON136/dsh-plan-float)
+![Stars](https://img.shields.io/github/stars/IRON136/dsh-plan-float)
+![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.8-4b8bbe)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Browser-lightgrey)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
+
 A **floating, draggable plan window** for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI: approve plans before execution, track progress live, and rewrite the roadmap mid-run to steer the agent instantly.
 
 > This is a **local extension** of the installed `@deepseek-ai/dsh-client-ui-plan` plugin — it does not modify dsh core or add system-level components, and it activates through dsh's client-plugin hot-reload mechanism.
