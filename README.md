@@ -1,5 +1,7 @@
 # dsh-plan-float — dsh 悬浮计划窗口
 
+> **中文** | [English](README.en.md)
+
 为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web GUI 添加一个**可悬浮拖动、实时同步、运行中可改计划**的计划窗口。
 
 > 这是对已安装插件 `@deepseek-ai/dsh-client-ui-plan` 的**本地扩展**（不修改 dsh 核心、不新增系统级组件），通过 dsh 的 client 插件热更新机制生效。
