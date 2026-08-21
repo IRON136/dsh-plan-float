@@ -1,78 +1,78 @@
-# dsh-plan-float — dsh 悬浮计划窗口
+# dsh-plan-float — Floating Plan Window for dsh
 
-> **中文** | [English](README.en.md)
+> [中文](README.zh.md) | **English**
 
-为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web GUI 添加一个**可悬浮拖动、实时同步、运行中可改计划**的计划窗口。
+A **floating, draggable plan window** for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI: approve plans before execution, track progress live, and rewrite the roadmap mid-run to steer the agent instantly.
 
-> 这是对已安装插件 `@deepseek-ai/dsh-client-ui-plan` 的**本地扩展**（不修改 dsh 核心、不新增系统级组件），通过 dsh 的 client 插件热更新机制生效。
+> This is a **local extension** of the installed `@deepseek-ai/dsh-client-ui-plan` plugin — it does not modify dsh core or add system-level components, and it activates through dsh's client-plugin hot-reload mechanism.
 
-## 特性
+## Features
 
-- **先计划后执行（可选）**：一键开启「计划模式」（等价 `/plan`）。模型先调研规划，通过 `exit_plan_mode` 提交计划后在**主页面官方审批卡片**确认；审批期间浮窗只显示精简提示，通过后浮窗展示精简任务列表。
-- **可悬浮、可拖动、方向自适应**：窗口与收起后的小圆点均可拖动（位置记忆于 localStorage）；展开方向四向自适应——向右/向下放不下时自动向左/向上展开，窗口始终完整显示在浏览器页面范围内；层级置顶，不被任何弹层遮挡。
-- **实时任务列表**：模型每次 `todo_write` 后列表实时刷新（状态点 + 进度计数）。条目超长自动两行截断（悬停看全文）；已完成项绿色删除线划掉；进行中蓝色加粗。
-- **运行中修改计划**：编辑模式支持改文本、排序、增删、勾选完成/恢复；「应用修改并继续」会通过 `session.prompt(steer)` **打断模型当前回合**，模型逐字采纳新列表并按新计划继续——与在输入框直接打字打断是同一条通道。
-- **自动诊断**：渲染出错时浮窗显示错误面板，并把错误自动作为一条消息发回会话，便于快速定位。
+- **Plan first, execute after approval (optional)**: one-click "plan mode" (equivalent to `/plan`). The model researches and drafts a plan, submits it via `exit_plan_mode`, and you approve it in the **official review card on the main page**. While pending, the floating window only shows a compact hint; after approval it shows the compact task list.
+- **Floating, draggable, direction-adaptive**: both the window and the collapsed dot are draggable (position persisted in localStorage). The window expands in four adaptive directions — if it does not fit to the right/down, it expands left/up — and always stays fully inside the browser viewport. Topmost z-index, never covered by other layers.
+- **Live task list**: refreshes in real time on every model `todo_write` (status dots + progress counts). Long items truncate to two lines (hover for full text); completed items are struck through in green; in-progress items are bold blue.
+- **Edit the plan mid-run**: edit mode supports text changes, reordering, adding/removing, and toggling done/pending. "Apply & continue" sends the updated plan through `session.prompt(steer)`, **interrupting the model's current turn** — the model adopts the new list verbatim and continues. This is the exact same channel as typing in the input box to interrupt.
+- **Self-diagnosis**: on a render error the window shows an error panel and automatically posts the error back into the session as a message for fast debugging.
 
-## 工作原理
+## How it works
 
-纯客户端插件，复用 dsh 的四个既有机制：
+Pure client-side plugin built on four existing dsh mechanisms:
 
-| 机制 | 用途 |
+| Mechanism | Purpose |
 | --- | --- |
-| `shell.overlay` 槽位 | 官方预留的帧级浮层，浮窗注册于此 |
-| 会话投影（`todos` / `plan`） | 实时读取模型 todo 列表与计划模式状态 |
-| PendingInteraction（`question/requested`） | 检测 plan-review 审批状态（审批操作在主页面官方卡片完成） |
-| SessionFace API（`command` / `prompt`） | 切换计划模式、以 steer/queue 方式把新计划发给模型 |
+| `shell.overlay` slot | The official frame-level overlay seat the window registers into |
+| Session projections (`todos` / `plan`) | Live reads of the model's todo list and plan-mode state |
+| PendingInteraction (`question/requested`) | Detects plan-review status (approval happens in the official main-page card) |
+| SessionFace API (`command` / `prompt`) | Toggles plan mode; sends the new plan to the model via steer/queue |
 
-部署方式是改写已挂载插件 `@deepseek-ai/dsh-client-ui-plan` 的 `lib/client.js`（profile 中该包为 junction，指向全局安装副本），**无需编译、无需重启服务**；刷新页面即生效。
+Deployment rewrites `lib/client.js` of the already-mounted `@deepseek-ai/dsh-client-ui-plan` package (in the profile the package is a junction to the global install), so **no compilation and no server restart are needed** — a page refresh is enough.
 
-## 安装 / 部署
+## Installation
 
-前置：本机已通过 `dsh web` 运行 DeepSeek Harness Web GUI（默认 `http://127.0.0.1:3080`）。
+Prerequisite: DeepSeek Harness Web GUI running via `dsh web` (default `http://127.0.0.1:3080`).
 
-**方式一：一键脚本（推荐）**
+**Option 1: one-click script (recommended)**
 
 ```bash
 node apply.mjs
 ```
 
-脚本幂等：已应用则跳过；dsh 升级覆盖后可重跑。
+Idempotent: skips if already applied; re-run after a dsh upgrade overwrites the package.
 
-**方式二：手动复制**
+**Option 2: manual copy**
 
-将 `client.js` 复制到：
+Copy `client.js` to:
 
 ```
 %USERPROFILE%\.dsh\profiles\node_modules\@deepseek-ai\dsh-client-ui-plan\lib\client.js
 ```
 
-然后刷新浏览器页面（`Ctrl + Shift + R`）。页面右侧出现「计划」小圆点即部署成功。
+Then hard-refresh the browser page (`Ctrl + Shift + R`). The floating "Plan" dot on the right side of the page means deployment succeeded.
 
-## 回滚
+## Rollback
 
-把 `client.orig.js`（官方原版备份）复制回上述路径即可。
+Copy `client.orig.js` (pristine official backup) back to the same path.
 
-## 文件结构
+## File layout
 
-| 文件 | 说明 |
+| File | Description |
 | --- | --- |
-| `client.js` | 合并后的完整 client bundle（部署产物） |
-| `client.orig.js` | 官方原版备份（回滚用） |
-| `window-block.js.txt` | 悬浮窗口源码块（单独维护的源） |
-| `apply.mjs` | 一键应用/重装脚本（幂等） |
-| `package.json` / `LICENSE` / `README.md` | 工程元数据 |
+| `client.js` | Merged client bundle (deployment artifact) |
+| `client.orig.js` | Pristine official backup (rollback) |
+| `window-block.js.txt` | Source block of the floating window (single maintained source) |
+| `apply.mjs` | One-click apply/reinstall script (idempotent) |
+| `package.json` / `LICENSE` / `README.md` / `README.en.md` | Project metadata & docs |
 
-## 已知边界（dsh 原生行为）
+## Known limitations (dsh native behavior)
 
-- **todo 列表按回合重置**：`turn/start` 事件清空投影，模型每轮开始会重写列表。
-- **计划模式切换延迟一个回合生效**：开关状态在下一个 step 被 host 采纳。
-- **dsh 升级会覆盖本扩展**：升级后重跑 `node apply.mjs` 即可。
+- **The todo list resets per turn**: the `turn/start` event clears the projection; the model rewrites the list at the start of each turn.
+- **Plan-mode toggle takes effect one turn later**: the switch is adopted by the host at the next accepted step.
+- **dsh upgrades overwrite this extension**: re-run `node apply.mjs` after upgrading.
 
-## 兼容性
+## Compatibility
 
-- 测试环境：dsh 0.1.0-rc.8 / Windows / 现代 Chromium 系浏览器
-- 依赖 dsh 的 client 插件体系（`dsh.client`、`shell.overlay`、会话投影、PendingInteraction），需对应版本及以上。
+- Tested on: dsh 0.1.0-rc.8 / Windows / modern Chromium-based browsers
+- Depends on dsh's client plugin system (`dsh.client`, `shell.overlay`, session projections, PendingInteraction) — requires that version or newer.
 
 ## License
 
